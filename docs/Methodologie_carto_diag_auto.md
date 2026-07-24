@@ -765,7 +765,13 @@ On aura un résultat complet avec toutes les communes de la France sans filtre a
 
 <img width="2338" height="1653" alt="M3_comptage_routie" src="https://github.com/user-attachments/assets/7c02c2b9-fe25-4c5a-bbf9-e928cff10376" />
 
+<img width="1653" height="2338" alt="E1_evolution_des_emplois_nombre_structure_prive_public_taux_chomage" src="https://github.com/user-attachments/assets/c907bfad-3c26-4b8e-968a-5537c7053ea6" />
+
+<img width="1653" height="2338" alt="E1_evolution_des_emplois_nombre_structure_prive_public_taux d&#39;evolution emploi" src="https://github.com/user-attachments/assets/43132727-0e06-4fae-87b0-7964c25b1c0b" />
+
 <img width="2480" height="1748" alt="E10_INDICATEUR_DE_CONCENTRATION_EMPLOI_FC" src="https://github.com/user-attachments/assets/4298836b-b58d-4f10-b9e4-bee28ff65fa0" />
+
+<img width="1653" height="2338" alt="E1_Nombre et part des effectifs salariés en 2024" src="https://github.com/user-attachments/assets/ee914335-9b99-4b04-95b6-2b9c3d95f6ae" />
 
 <img width="1653" height="2338" alt="M4_part modale" src="https://github.com/user-attachments/assets/10c95eb6-f2f2-40e6-adc9-586c6c74f9b0" />
 

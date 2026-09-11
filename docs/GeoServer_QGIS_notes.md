@@ -53,7 +53,7 @@ Les images sont découpées en **dalles (tuiles)** de plus en plus petites à me
 
 - **Compte alternatif** :
   - `user : cpgeom`
-  - `mdp : cpgeom2026`
+  - `mdp : cp...m2026`
 
 > ℹ️ Ces identifiants peuvent être modifiés par l'administrateur.
 

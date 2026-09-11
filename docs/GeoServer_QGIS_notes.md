@@ -8,7 +8,7 @@
 
 Les **serveurs cartographiques** (ou serveurs web carto) permettent de mettre à disposition, via Internet, des données issues d'un Système d'Information Géographique (SIG). Ils servent d'intermédiaire entre les données stockées (fichiers, bases de données) et les clients qui les consomment (logiciels SIG comme QGIS, interfaces web cartographiques, etc.), sous forme de **flux** (WMS, WFS...).
 
-<img width="606" height="573" alt="Image2" src="https://github.com/user-attachments/assets/dfbe40c7-ab95-4a3a-9051-da21137a3785" />
+<img width="1919" height="918" alt="geoserver" src="https://github.com/user-attachments/assets/157308a2-12d4-4d31-85c5-ed74542aa9b5" />
 
 ### Les principaux serveurs cartographiques
 
@@ -115,6 +115,8 @@ Espace de travail
 
 Depuis la barre latérale de GeoServer, ajouter un **espace de travail** (workspace) qui regroupera les données d'un projet.
 
+<img width="1906" height="921" alt="creer espace tr" src="https://github.com/user-attachments/assets/e003b08f-1cc0-4ca3-8adb-4bada8888092" />
+
 ### Étape 2 — Créer un entrepôt (data store)
 
 1. Ajouter un **entrepôt** et choisir le type de source de données :
@@ -128,8 +130,6 @@ Depuis la barre latérale de GeoServer, ajouter un **espace de travail** (worksp
    - **Jeu de caractères** (ex. `UTF-8`)
 3. **Sauvegarder**.
 
-<img width="606" height="301" alt="Image3" src="https://github.com/user-attachments/assets/45487739-989b-4d86-9f2c-29c6272c9ac1" />
-
 ### Étape 3 — Publier la couche
 
 1. Depuis l'entrepôt créé, cliquer sur **Publier** en face de la ressource souhaitée.
@@ -137,7 +137,7 @@ Depuis la barre latérale de GeoServer, ajouter un **espace de travail** (worksp
 3. *(Optionnel)* Avant de sauvegarder, il est possible de **retirer ou rajouter des attributs** dans le type d'objet (feature type).
 4. **Sauvegarder** pour publier la couche.
 
-<img width="606" height="289" alt="Image4" src="https://github.com/user-attachments/assets/dbc598b9-d1f8-4b58-9085-eede0862d6de" />
+<img width="1913" height="911" alt="publier une couche" src="https://github.com/user-attachments/assets/5dc8e436-b7c5-4a10-98ba-d2200ab71684" />
 
 ### Étape 4 — Visualiser la couche publiée
 
@@ -145,11 +145,9 @@ Depuis la barre latérale de GeoServer, ajouter un **espace de travail** (worksp
 2. Rechercher la couche publiée dans la liste.
 3. Cliquer sur **OpenLayers** pour l'afficher dans le navigateur.
 
-<img width="606" height="297" alt="Image5" src="https://github.com/user-attachments/assets/02be3fd4-4788-47a1-8a3f-c5d44d3841c8" />
+<img width="1917" height="907" alt="previsualisation" src="https://github.com/user-attachments/assets/e877d92d-91c5-4905-ac47-282d403d083a" />
 
 ### Étape 5 — Récupérer le flux pour QGIS
-
-<img width="606" height="313" alt="Image6" src="https://github.com/user-attachments/assets/235b2c17-1654-451c-8d43-a2ce5b88bdde" />
 
 Sur la page de prévisualisation OpenLayers, copier l'**URL** affichée jusqu'à `…wms?` :
 
@@ -158,7 +156,7 @@ Sur la page de prévisualisation OpenLayers, copier l'**URL** affichée jusqu'à
 
 Dans QGIS : *Couche → Ajouter une couche → Ajouter une couche WMS/WFS* → coller l'URL comme nouvelle connexion.
 
-<img width="606" height="328" alt="Image7" src="https://github.com/user-attachments/assets/2f2d51d6-4c29-4842-8a53-afc53071f765" />
+<img width="1919" height="1035" alt="generer wms" src="https://github.com/user-attachments/assets/de2b3920-cd54-4f71-ac95-c9f8e53af577" />
 
 ---
 
@@ -181,7 +179,7 @@ GeoServer permet de créer des **styles symbologiques** (format SLD) et de les a
 
 Menu **Données → Styles → Ajouter un nouveau style**, puis définir la symbologie souhaitée.
 
-<img width="602" height="301" alt="Image8" src="https://github.com/user-attachments/assets/25cf5829-6955-47c2-8d51-128af85c5c33" />
+<img width="1911" height="920" alt="creer style" src="https://github.com/user-attachments/assets/33ac67e2-bd97-4bdd-aa0a-5f649835cdc8" />
 
 ### Associer un style à une couche
 
@@ -191,13 +189,13 @@ Menu **Données → Styles → Ajouter un nouveau style**, puis définir la symb
    - Ajouter des **styles additionnels** si besoin (liste "Styles disponibles" → "Styles sélectionnés")
 3. **Sauvegarder**.
 
-<img width="602" height="291" alt="Image9" src="https://github.com/user-attachments/assets/1cd09bd5-fe05-405c-89b3-9873465ef8d2" />
+<img width="1913" height="925" alt="associer le syle couhe" src="https://github.com/user-attachments/assets/599f2581-829d-4d86-a848-b3d236976ee1" />
 
 ### Vérifier le résultat
 
 Retourner dans **Prévisualisation de la couche** pour voir le rendu avec la nouvelle symbologie appliquée.
 
-<img width="602" height="308" alt="Image10" src="https://github.com/user-attachments/assets/10783304-d1dd-400d-941a-53869863c0b2" />
+<img width="1917" height="907" alt="previsualisation" src="https://github.com/user-attachments/assets/6adcc9eb-ebe1-43ad-9b31-36619da39a80" />
 
 ---
 
@@ -228,7 +226,7 @@ en 2154                    Mettre en forme
 5. Dans GeoServer : créer un entrepôt, publier les couches, créer et affecter les styles.
 6. Tester le résultat final (prévisualisation / QGIS).
 
-<img width="606" height="264" alt="Image11" src="https://github.com/user-attachments/assets/2b058fc4-c209-4200-9ea1-b75f6194beb9" />
+<img width="1917" height="907" alt="previsualisation" src="https://github.com/user-attachments/assets/e1a4537c-b937-4fdc-8bd4-a57155bfd8ab" />
 
 ---
 
@@ -245,7 +243,7 @@ GeoServer dispose d'un module de gestion des accès : **Sécurité → Utilisate
 
 > 🔐 Cette section permet de contrôler qui peut **visualiser**, **modifier** ou **administrer** les espaces de travail, entrepôts et couches (droits granulaires par rôle).
 
-<img width="602" height="292" alt="Image12" src="https://github.com/user-attachments/assets/1a3b07b7-639e-4276-a9ae-c66ae8b7f236" />
+<img width="1261" height="748" alt="resume" src="https://github.com/user-attachments/assets/2e972f53-2282-44b0-a88b-20a7d221fb2a" />
 
 ---
 

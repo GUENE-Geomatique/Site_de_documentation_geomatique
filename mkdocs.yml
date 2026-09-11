@@ -12,7 +12,7 @@ nav:
   - pgRouting 1: pgrouting1.md
   - pgRouting 2: pgrouting2.md
   - Manipulation de données avec commandes GDAL: GDAL_Ubuntu.md
-  - Manipulation de G'oserver: GeoServer_QGIS_notes.md
+  - Manipulation de Geoserver: GeoServer_QGIS_notes.md
   - Automatisation de cartes thématiques sur QGIS: Methodologie_carto_diag_auto.md
   - Cartographie avec Rstudio: rstudio_geomatique.md
   - Brique de Télédétection et Géomatqiue: teledetection.md

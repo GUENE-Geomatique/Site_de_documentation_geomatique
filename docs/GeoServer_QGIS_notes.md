@@ -195,7 +195,7 @@ Menu **Données → Styles → Ajouter un nouveau style**, puis définir la symb
 
 Retourner dans **Prévisualisation de la couche** pour voir le rendu avec la nouvelle symbologie appliquée.
 
-<img width="1917" height="907" alt="previsualisation" src="https://github.com/user-attachments/assets/6adcc9eb-ebe1-43ad-9b31-36619da39a80" />
+<img width="1918" height="983" alt="verifier resul" src="https://github.com/user-attachments/assets/73bb19ef-3379-4f5b-af20-366b42bc5eb0" />
 
 ---
 
@@ -226,7 +226,7 @@ en 2154                    Mettre en forme
 5. Dans GeoServer : créer un entrepôt, publier les couches, créer et affecter les styles.
 6. Tester le résultat final (prévisualisation / QGIS).
 
-<img width="1917" height="907" alt="previsualisation" src="https://github.com/user-attachments/assets/e1a4537c-b937-4fdc-8bd4-a57155bfd8ab" />
+<img width="1261" height="748" alt="resume" src="https://github.com/user-attachments/assets/a472a9ce-ad22-4baa-a30b-751b1ad1e91e" />
 
 ---
 
@@ -243,7 +243,7 @@ GeoServer dispose d'un module de gestion des accès : **Sécurité → Utilisate
 
 > 🔐 Cette section permet de contrôler qui peut **visualiser**, **modifier** ou **administrer** les espaces de travail, entrepôts et couches (droits granulaires par rôle).
 
-<img width="1261" height="748" alt="resume" src="https://github.com/user-attachments/assets/2e972f53-2282-44b0-a88b-20a7d221fb2a" />
+<img width="1906" height="917" alt="ser" src="https://github.com/user-attachments/assets/a1558b95-9808-4089-bde1-fc1e081bf3fd" />
 
 ---
 

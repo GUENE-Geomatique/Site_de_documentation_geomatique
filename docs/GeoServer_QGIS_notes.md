@@ -130,6 +130,8 @@ Depuis la barre latérale de GeoServer, ajouter un **espace de travail** (worksp
    - **Jeu de caractères** (ex. `UTF-8`)
 3. **Sauvegarder**.
 
+<img width="1919" height="916" alt="Capture d&#39;écran 2026-09-14 084949" src="https://github.com/user-attachments/assets/5bd7b728-778b-4c0d-8d69-f774cbd5994e" />
+
 ### Étape 3 — Publier la couche
 
 1. Depuis l'entrepôt créé, cliquer sur **Publier** en face de la ressource souhaitée.
@@ -168,6 +170,8 @@ Le principe est identique à un shapefile :
 2. Dans les paramètres, sélectionner dans le répertoire le fichier `.gpkg` contenant les données.
 3. **Sauvegarder**.
 4. Publier la couche comme décrit à l'étape 3 ci-dessus.
+
+<img width="1915" height="913" alt="k" src="https://github.com/user-attachments/assets/dfde4e94-a559-44b8-b6e4-a5e1a5ab4c75" />
 
 ---
 

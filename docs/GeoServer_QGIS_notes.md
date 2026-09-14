@@ -54,8 +54,8 @@ Les images sont découpées en **dalles (tuiles)** de plus en plus petites à me
   - `mdp : Sou..#`
 
 - **Compte alternatif** :
-  - `user : cpgeom`
-  - `mdp : cp...m2026`
+  - `user : cp..om`
+  - `mdp : cp...m.02.`
 
 > ℹ️ Ces identifiants peuvent être modifiés par l'administrateur.
 
@@ -72,9 +72,9 @@ http://qgis.demo/cgi-bin/qgis_mapserv.fcgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=Get
 
 | Formation | Login | Mot de passe |
 |---|---|---|
-| **MALT 2024-2025** | `stagiaire` | `stagiaire` |
-| **CPGEOM 2025-2027** | `cpgeom` | `cpgeom2026` |
-| **CPGEOM — accès admin** | `admin` | `geoserver` |
+| **MALT 2024-2025** | `...giaire` | `...giaire` |
+| **CPGEOM 2025-2027** | `cp...m` | `c...om20..` |
+| **CPGEOM — accès admin** | `admin` | `g....ver` |
 
 ### 2.4 Installation
 

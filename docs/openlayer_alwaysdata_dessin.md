@@ -651,8 +651,7 @@ pg_close($conn);
 
 ---
 
-## 10. Aller plus loin
-
+## 10. Aller plus loin (modifier, supprimer, formulaire attribut etc)
 
 ### 10.1 Découvrir la vraie structure de la table `dae_chalons`
 

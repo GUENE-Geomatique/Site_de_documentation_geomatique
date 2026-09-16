@@ -2,23 +2,6 @@
 
 > Ce tutoriel retrace pas à pas la construction d'une carte web interactive : depuis la préparation de l'hébergement jusqu'à la géolocalisation de l'utilisateur, en passant par l'affichage de données PostGIS, la symbologie, les contrôles et les infobulles.
 
-## Sommaire
-
-1. [Pré-requis et mise en place de l'hébergement](#1-pré-requis-et-mise-en-place-de-lhébergement)
-2. [Éditer et publier ses fichiers avec Notepad++ et FTP](#2-éditer-et-publier-ses-fichiers-avec-notepad-et-ftp)
-3. [Bases de JavaScript : variables et fonctions](#3-bases-de-javascript--variables-et-fonctions)
-4. [jQuery : simplifier le JavaScript](#4-jquery--simplifier-le-javascript)
-5. [Premiers pas avec OpenLayers](#5-premiers-pas-avec-openlayers)
-6. [Afficher des données PostGIS via PHP](#6-afficher-des-données-postgis-via-php)
-7. [Symbologie : couleurs graduées et catégorisées](#7-symbologie--couleurs-graduées-et-catégorisées)
-8. [Les contrôles : échelle et sélecteur de couches](#8-les-contrôles--échelle-et-sélecteur-de-couches)
-9. [Les interactions : sélectionner un objet](#9-les-interactions--sélectionner-un-objet)
-10. [Les overlays : infobulle au clic](#10-les-overlays--infobulle-au-clic)
-11. [La géolocalisation](#11-la-géolocalisation)
-12. [Organiser son code : externaliser en fichier .js](#12-organiser-son-code--externaliser-en-fichier-js)
-13. [Pièges rencontrés et comment les éviter](#13-pièges-rencontrés-et-comment-les-éviter)
-14. [Structure finale du projet](#14-structure-finale-du-projet)
-
 ---
 
 ## 1. Pré-requis et mise en place de l'hébergement

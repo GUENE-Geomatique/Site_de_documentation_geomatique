@@ -46,6 +46,8 @@ Sur AlwaysData, tout ce qui est déposé dans le dossier `www/` est directement 
 http://VOTRE_COMPTE.alwaysdata.net/
 ```
 
+<img width="1919" height="919" alt="2" src="https://github.com/user-attachments/assets/60ed4fd1-70a6-4b75-b367-539ad4e2b440" />
+
 Exemple pour ce tutoriel :
 
 ```
@@ -63,6 +65,8 @@ www/
 │       └── postgis_geojson_abdoulahat_alwaysdata.php
 ├── index.html
 ```
+
+<img width="1917" height="1029" alt="1" src="https://github.com/user-attachments/assets/86649424-462d-46a3-a9fb-6a67937850a8" />
 
 > ⚠️ **Règle d'or à retenir** : tous les chemins utilisés dans vos fichiers HTML/JS (`src="..."`, `url:'...'`) sont **relatifs à l'emplacement du fichier HTML qui les utilise**, pas à la racine du site. Si votre page est dans `site_temporel/ol/`, un chemin `images/regions.png` cherchera un dossier `images` **à l'intérieur de** `ol/`, pas ailleurs. Pour remonter d'un niveau, on utilise `../`.
 
@@ -1337,6 +1341,8 @@ document.getElementById('bouton_geoloc').addEventListener('click', function(){
 </body>
 </html>
 ```
+
+<img width="1917" height="991" alt="3" src="https://github.com/user-attachments/assets/4daa59a5-f9d3-4d9d-bdab-fe7d1848d094" />
 
 ---
 

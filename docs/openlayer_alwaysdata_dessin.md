@@ -645,6 +645,10 @@ pg_close($conn);
 ?>
 ```
 
+<img width="1919" height="1029" alt="1" src="https://github.com/user-attachments/assets/e620351a-ef48-4992-b882-69d7e9e4f42c" />
+
+<img width="1919" height="1029" alt="2" src="https://github.com/user-attachments/assets/8ef47366-3a3a-429d-a8a5-1c64be2478fb" />
+
 ---
 
 ## 10. Aller plus loin

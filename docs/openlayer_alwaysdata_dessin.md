@@ -663,4 +663,4 @@ Quelques pistes pour prolonger cette base :
 
 ---
 
-*Ce tutoriel fait suite à [tutoriel-openlayers-postgis.md](./tutoriel-openlayers-postgis.md), qui couvre la mise en place de l'hébergement, les bases JavaScript/jQuery, l'affichage de données PostGIS, la symbologie, les contrôles, les interactions de sélection et la géolocalisation.*
+*Ce tutoriel fait suite à **Page web avec OpenLayer**, qui couvre la mise en place de l'hébergement, les bases JavaScript/jQuery, l'affichage de données PostGIS, la symbologie, les contrôles, les interactions de sélection et la géolocalisation.*

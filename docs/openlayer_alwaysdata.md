@@ -977,6 +977,10 @@ map.on('singleclick', function(evt){
 
 ## 11. La géolocalisation
 
+**NB:** A la fin, testez l'URL de votre page avec `https://` au lieu de `http://` :
+
+`https://abdoulahat.alwaysdata.net/site_temporel/ol/carte_commune_cpgeom.html`
+
 `ol.Geolocation` utilise l'API de géolocalisation du navigateur (HTML5) pour positionner la carte sur l'utilisateur.
 
 > ⚠️ **Pré-requis technique important** : la géolocalisation HTML5 nécessite une page servie en **HTTPS** (ou en local via `localhost`) dans la plupart des navigateurs modernes. Une page en `http://` simple peut voir la fonctionnalité bloquée par le navigateur.

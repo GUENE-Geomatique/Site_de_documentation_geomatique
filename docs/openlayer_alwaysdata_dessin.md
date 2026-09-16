@@ -653,7 +653,337 @@ pg_close($conn);
 
 ## 10. Aller plus loin
 
-Quelques pistes pour prolonger cette base :
+
+### 10.1 Découvrir la vraie structure de la table `dae_chalons`
+
+En inspectant la table en base, deux différences importantes apparaissent par rapport aux hypothèses de départ (section 9) :
+
+| Hypothèse initiale | Réalité en base |
+|---|---|
+| clé primaire `id` | clé primaire **`gid`** (SERIAL) |
+| colonne géométrie `geom` | colonne géométrie **`the_geom`** |
+| pas d'attributs métier | de nombreux champs (`c_nom`, `c_adr_voie`, `c_com_nom`, `c_expt_rais`, `c_acc`, `c_disp_j`, `c_disp_h`...) — schéma proche du Registre National des DAE |
+
+Avant d'écrire la moindre requête SQL sur une table existante, il faut donc toujours vérifier sa structure réelle (via un client PostGIS type pgAdmin/phpPgAdmin, ou `\d dae_chalons` en ligne de commande `psql`), plutôt que de supposer une convention de nommage.
+
+Il faut aussi vérifier le SRID réellement stocké dans `the_geom` :
+
+```sql
+SELECT Find_SRID('public', 'dae_chalons', 'the_geom');
+```
+
+Dans ce projet, la carte et les scripts PHP utilisent **EPSG:3857** de bout en bout (cohérent avec le résultat obtenu).
+
+---
+
+### 10.2 Corriger le script de lecture GeoJSON
+
+Le script `postgis_geojson_abdoulahat_alwaysdata.php` (basé sur le script fourni par le professeur) accepte bien un paramètre `geomfield` en entrée, mais contenait un bug : la clause `WHERE` était codée en dur sur `geom`, ignorant ce paramètre.
+
+```php
+// AVANT — bug : ignore le paramètre $geomfield
+$sql .= " WHERE geom is not null";
+```
+
+```php
+// APRÈS — corrigé
+$sql .= " WHERE " . $geomfield . " is not null";
+```
+
+**Conséquence du bug** : sur une table où la colonne s'appelle `the_geom` (et non `geom`), la requête SQL échouait systématiquement (`An SQL error occured.`), donc **aucune feature n'était renvoyée** → la couche restait vide et la carte ne zoomait jamais sur l'étendue des points (puisque `featuresloadend` recevait 0 features).
+
+Un second ajustement était nécessaire pour que l'identifiant de chaque feature GeoJSON corresponde à la vraie clé primaire, afin que `feature.getId()` fonctionne côté OpenLayers (indispensable pour cibler un point à modifier ou supprimer) :
+
+```php
+// AVANT
+if ($key == "id") {
+    $id .= ',"id":"' . escapeJsonString($val) . '"';
+}
+```
+
+```php
+// APRÈS
+if ($key == "gid") {
+    $id .= ',"id":"' . escapeJsonString($val) . '"';
+}
+```
+
+**Appel corrigé, avec le bon nom de champ géométrie :**
+```
+postgis_geojson_abdoulahat_alwaysdata.php?geotable=dae_chalons&geomfield=the_geom
+```
+
+---
+
+### 10.3 Ajouter un formulaire d'attributs avant l'enregistrement
+
+Plutôt que d'enregistrer un point dès la fin du tracé (`drawend`), on intercale une petite fenêtre modale demandant de saisir quelques attributs utiles de la table : `c_nom`, `c_adr_voie`, `c_com_nom`. L'enregistrement en base n'a lieu qu'après validation du formulaire.
+
+**Principe :**
+1. `drawend` ne déclenche plus l'appel réseau directement — il stocke les coordonnées du point dans une variable temporaire (`coord_en_attente`) et affiche la modale.
+2. Le bouton **Enregistrer** de la modale lit les champs saisis, construit l'URL avec `encodeURIComponent()` sur chaque valeur, puis appelle `ajout_point.php`.
+3. Le bouton **Annuler** referme la modale et vide la couche de dessin temporaire, sans rien enregistrer.
+
+```javascript
+var overlay_modale = document.getElementById('overlay_modale');
+var champ_nom = document.getElementById('champ_nom');
+var champ_adr_voie = document.getElementById('champ_adr_voie');
+var champ_com_nom = document.getElementById('champ_com_nom');
+var coord_en_attente = null;
+
+draw_dae.on('drawend', function(evt){
+    var geom = evt.feature.getGeometry();
+    coord_en_attente = geom.getCoordinates(); // [x, y] en EPSG:3857
+    champ_nom.value = '';
+    champ_adr_voie.value = '';
+    champ_com_nom.value = '';
+    overlay_modale.style.display = 'flex';
+});
+
+document.getElementById('btn_annuler_modale').addEventListener('click', function(){
+    overlay_modale.style.display = 'none';
+    source_point_dessin.clear();
+    coord_en_attente = null;
+});
+
+document.getElementById('btn_valider_modale').addEventListener('click', function(){
+    if (!coord_en_attente) return;
+
+    var nom = champ_nom.value.trim();
+    var adr_voie = champ_adr_voie.value.trim();
+    var com_nom = champ_com_nom.value.trim();
+
+    overlay_modale.style.display = 'none';
+
+    var url = 'ajout_point.php?x=' + coord_en_attente[0] +
+              '&y=' + coord_en_attente[1] +
+              '&c_nom=' + encodeURIComponent(nom) +
+              '&c_adr_voie=' + encodeURIComponent(adr_voie) +
+              '&c_com_nom=' + encodeURIComponent(com_nom);
+
+    fetch(url)
+        .then(function(r){ return r.json(); })
+        .then(function(resultat){
+            if (resultat.success){
+                donnees_dae.clear();
+                donnees_dae.refresh();
+                source_point_dessin.clear();
+            }
+            coord_en_attente = null;
+        });
+});
+```
+
+**Côté PHP**, `ajout_point.php` reçoit ces trois champs en plus de `x`/`y`, et les insère via des **paramètres liés** (`pg_query_params`), donc sans risque d'injection SQL, même si l'utilisateur saisit des caractères spéciaux :
+
+```php
+<?php
+// ajout_point.php — insertion sécurisée d'un point dans dae_chalons
+require_once('config.php');
+
+header('Content-Type: application/json');
+
+$conn = pg_connect("dbname='$db_name' user='$db_user' password='$db_pass' host='$db_host' port='$db_port'");
+if (!$conn) {
+    echo json_encode(['success' => false, 'error' => 'Connexion échouée : ' . pg_last_error()]);
+    exit;
+}
+
+$x = isset($_GET['x']) ? floatval($_GET['x']) : null;
+$y = isset($_GET['y']) ? floatval($_GET['y']) : null;
+$c_nom = isset($_GET['c_nom']) ? trim($_GET['c_nom']) : null;
+$c_adr_voie = isset($_GET['c_adr_voie']) ? trim($_GET['c_adr_voie']) : null;
+$c_com_nom = isset($_GET['c_com_nom']) ? trim($_GET['c_com_nom']) : null;
+
+if ($x === null || $y === null){
+    echo json_encode(['success' => false, 'error' => 'Coordonnées manquantes']);
+    exit;
+}
+
+$sql = "INSERT INTO dae_chalons(the_geom, c_nom, c_adr_voie, c_com_nom)
+        VALUES (ST_SetSRID(ST_MakePoint($1, $2), 3857), $3, $4, $5)
+        RETURNING gid";
+$result = pg_query_params($conn, $sql, array($x, $y, $c_nom, $c_adr_voie, $c_com_nom));
+
+if ($result){
+    $row = pg_fetch_assoc($result);
+    echo json_encode(['success' => true, 'gid' => $row['gid'], 'x' => $x, 'y' => $y]);
+} else {
+    echo json_encode(['success' => false, 'error' => pg_last_error($conn)]);
+}
+
+pg_close($conn);
+?>
+```
+
+---
+
+### 10.4 Modifier (déplacer) un point existant
+
+Comme en section 3 du tutoriel principal, on combine `ol.interaction.Select` (pour choisir le point) et `ol.interaction.Modify` (pour le déplacer), en les limitant à la couche `couche_dae` et en les conditionnant à une case à cocher dédiée :
+
+```javascript
+var select_dae = new ol.interaction.Select({
+    layers: [couche_dae],
+    condition: function(evt){
+        return checkbox_modifier.checked && ol.events.condition.click(evt);
+    }
+});
+map.addInteraction(select_dae);
+
+var modify_dae = new ol.interaction.Modify({
+    features: select_dae.getFeatures(),
+    condition: function(evt){
+        return checkbox_modifier.checked;
+    }
+});
+map.addInteraction(modify_dae);
+
+modify_dae.on('modifyend', function(evt){
+    var feature = evt.features.item(0);
+    var gid = feature.getId();
+    var coord = feature.getGeometry().getCoordinates();
+
+    fetch('update_point.php?gid=' + gid + '&x=' + coord[0] + '&y=' + coord[1])
+        .then(function(r){ return r.json(); });
+});
+```
+
+> Ce mécanisme ne fonctionne que si `feature.getId()` renvoie bien le `gid` — d'où la correction apportée en 10.2 sur le script de lecture GeoJSON.
+
+**Script PHP associé**, `update_point.php`, symétrique à `ajout_point.php` mais avec une clause `WHERE` sur la clé primaire :
+
+```php
+<?php
+// update_point.php — déplacement sécurisé d'un point dans dae_chalons
+require_once('config.php');
+
+header('Content-Type: application/json');
+
+$conn = pg_connect("dbname='$db_name' user='$db_user' password='$db_pass' host='$db_host' port='$db_port'");
+if (!$conn) {
+    echo json_encode(['success' => false, 'error' => 'Connexion échouée : ' . pg_last_error()]);
+    exit;
+}
+
+$gid = isset($_GET['gid']) ? intval($_GET['gid']) : null;
+$x = isset($_GET['x']) ? floatval($_GET['x']) : null;
+$y = isset($_GET['y']) ? floatval($_GET['y']) : null;
+
+if ($gid === null || $x === null || $y === null){
+    echo json_encode(['success' => false, 'error' => 'Paramètres manquants']);
+    exit;
+}
+
+$sql = "UPDATE dae_chalons SET the_geom = ST_SetSRID(ST_MakePoint($1, $2), 3857) WHERE gid = $3";
+$result = pg_query_params($conn, $sql, array($x, $y, $gid));
+
+if ($result){
+    echo json_encode(['success' => true, 'gid' => $gid]);
+} else {
+    echo json_encode(['success' => false, 'error' => pg_last_error($conn)]);
+}
+
+pg_close($conn);
+?>
+```
+
+---
+
+### 10.5 Supprimer un point existant
+
+Un bouton "Supprimer le point sélectionné" apparaît uniquement quand `select_dae` contient une entité. Il demande confirmation (`confirm()`) avant d'appeler `delete_point.php`, puis retire localement l'entité de la couche pour un retour visuel immédiat :
+
+```javascript
+document.getElementById('btn_supprimer').addEventListener('click', function(){
+    var features = select_dae.getFeatures();
+    if (features.getLength() === 0) return;
+
+    var feature = features.item(0);
+    var gid = feature.getId();
+
+    if (!confirm('Supprimer ce point (gid ' + gid + ') ?')) return;
+
+    fetch('delete_point.php?gid=' + gid)
+        .then(function(r){ return r.json(); })
+        .then(function(resultat){
+            if (resultat.success){
+                donnees_dae.removeFeature(feature);
+                select_dae.getFeatures().clear();
+            }
+        });
+});
+```
+
+```php
+<?php
+// delete_point.php — suppression sécurisée d'un point dans dae_chalons
+require_once('config.php');
+
+header('Content-Type: application/json');
+
+$conn = pg_connect("dbname='$db_name' user='$db_user' password='$db_pass' host='$db_host' port='$db_port'");
+if (!$conn) {
+    echo json_encode(['success' => false, 'error' => 'Connexion échouée : ' . pg_last_error()]);
+    exit;
+}
+
+$gid = isset($_GET['gid']) ? intval($_GET['gid']) : null;
+
+if ($gid === null){
+    echo json_encode(['success' => false, 'error' => 'Identifiant manquant']);
+    exit;
+}
+
+$sql = "DELETE FROM dae_chalons WHERE gid = $1";
+$result = pg_query_params($conn, $sql, array($gid));
+
+if ($result){
+    echo json_encode(['success' => true, 'gid' => $gid]);
+} else {
+    echo json_encode(['success' => false, 'error' => pg_last_error($conn)]);
+}
+
+pg_close($conn);
+?>
+```
+
+> **Point de vigilance** : les deux modes (dessin / modification) doivent s'exclure mutuellement, sinon les interactions `Draw` et `Modify` entrent en conflit sur les mêmes clics. Dans `dessin_dae_chalons.html`, chaque case à cocher décoche automatiquement l'autre lors de son activation.
+
+---
+
+### 10.6 Fichiers finaux du projet
+
+```
+site_temporel/ol/
+├── dessin_dae_chalons.html                     # carte + dessin + formulaire + modification + suppression
+├── ajout_point.php                             # INSERT sécurisé (géométrie + attributs)
+├── update_point.php                            # UPDATE sécurisé (déplacement)
+├── delete_point.php                            # DELETE sécurisé
+├── postgis_geojson_abdoulahat_alwaysdata.php   # lecture des points existants (corrigé : WHERE $geomfield, gid→id)
+└── config.php                                  # identifiants base (non versionné)
+```
+
+**Récapitulatif des correctifs et ajouts de cette section :**
+
+| Élément | Avant | Après |
+|---|---|---|
+| Clé primaire utilisée dans le JS/PHP | `id` | `gid` |
+| Colonne géométrie utilisée dans le JS/PHP | `geom` | `the_geom` |
+| Clause `WHERE` du script de lecture | codée en dur sur `geom` | dynamique sur `$geomfield` |
+| Mapping de l'id GeoJSON | `if ($key == "id")` | `if ($key == "gid")` |
+| Attributs enregistrés à l'ajout | aucun (géométrie seule) | `c_nom`, `c_adr_voie`, `c_com_nom` |
+| Modification d'un point existant | non implémentée | `Select` + `Modify` + `update_point.php` |
+| Suppression d'un point existant | non implémentée | bouton de suppression + `delete_point.php` |
+
+---
+
+*Cette section prolonge le tutoriel principal en s'appuyant sur une table PostGIS réelle (`dae_chalons`), illustrant l'importance de vérifier la structure exacte d'une table existante avant d'écrire du code qui la manipule.*
+
+---------------------------------------------------------------------------------
+
+
+**Quelques pistes pour prolonger cette base (certains déjà faits) :**
 
 - **Formulaire d'attributs** : après le `drawend`, ouvrir une petite fenêtre demandant de saisir des attributs (nom, catégorie...) avant l'envoi au PHP, plutôt que d'enregistrer uniquement la géométrie.
 - **Modifier/déplacer/supprimer les points existants** : combiner les interactions `Select` + `Modify`/`Translate` sur la couche `couche_dae`, avec des appels PHP `UPDATE`/`DELETE` (toujours avec `pg_query_params`, jamais de SQL construit côté client).

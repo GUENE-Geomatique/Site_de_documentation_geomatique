@@ -2,19 +2,6 @@
 
 > Ce tutoriel fait suite à **Page web avec OpenLayer**. Il couvre les interactions d'édition d'OpenLayers, qui permettent à l'utilisateur de dessiner, modifier, déplacer ou supprimer des objets directement sur la carte — jusqu'à l'enregistrement d'un point dessiné dans une base PostGIS via PHP.
 
-## Sommaire
-
-1. [Introduction](#1-introduction)
-2. [Dessiner un objet vecteur : `ol.interaction.Draw`](#2-dessiner-un-objet-vecteur--olinteractiondraw)
-3. [Modifier un objet vecteur : `ol.interaction.Modify`](#3-modifier-un-objet-vecteur--olinteractionmodify)
-4. [Déplacer un objet vecteur : `ol.interaction.Translate`](#4-déplacer-un-objet-vecteur--olinteractiontranslate)
-5. [Supprimer un objet vecteur](#5-supprimer-un-objet-vecteur)
-6. [Exemple combiné : dessiner, sélectionner, supprimer une ligne](#6-exemple-combiné--dessiner-sélectionner-supprimer-une-ligne)
-7. [Enregistrer un point dessiné dans PostGIS](#7-enregistrer-un-point-dessiné-dans-postgis)
-8. [⚠️ Sécuriser l'insertion en base (injection SQL)](#8-️-sécuriser-linsertion-en-base-injection-sql)
-9. [Mise en pratique : projet `dae_chalons`](#9-mise-en-pratique--projet-dae_chalons)
-10. [Aller plus loin](#10-aller-plus-loin)
-
 ---
 
 ## 1. Introduction

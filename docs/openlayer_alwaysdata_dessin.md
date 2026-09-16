@@ -1,6 +1,6 @@
 # Tutoriel : Éditer des objets vecteurs avec OpenLayers (Draw, Modify, Translate, suppression) et les enregistrer dans PostGIS
 
-> Ce tutoriel fait suite à [tutoriel-openlayers-postgis.md](./tutoriel-openlayers-postgis.md). Il couvre les interactions d'édition d'OpenLayers, qui permettent à l'utilisateur de dessiner, modifier, déplacer ou supprimer des objets directement sur la carte — jusqu'à l'enregistrement d'un point dessiné dans une base PostGIS via PHP.
+> Ce tutoriel fait suite à **Page web avec OpenLayer**. Il couvre les interactions d'édition d'OpenLayers, qui permettent à l'utilisateur de dessiner, modifier, déplacer ou supprimer des objets directement sur la carte — jusqu'à l'enregistrement d'un point dessiné dans une base PostGIS via PHP.
 
 ## Sommaire
 

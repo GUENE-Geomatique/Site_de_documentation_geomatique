@@ -14,6 +14,7 @@ nav:
   - Manipulation de données avec commandes GDAL: GDAL_Ubuntu.md
   - Manipulation de Geoserver: GeoServer_QGIS_notes.md
   - Page web avec OpenLayer: openlayer_alwaysdata.md
+  - Page web avec OpenLayer avec ajout point: openlayer_alwaysdata_dessin.md
   - Automatisation de cartes thématiques sur QGIS: Methodologie_carto_diag_auto.md
   - Cartographie avec Rstudio: rstudio_geomatique.md
   - Brique de Télédétection et Géomatqiue: teledetection.md

@@ -1,7 +1,7 @@
 # Automatisation du traitement FME avec un script Batch et planification
 ---
 https://docs.qgis.org/3.44/fr/docs/user_manual/processing/modeler.html
-
+[🔗  Documentation MODELEUR GRAPHIQUE DE QGIS](https://docs.qgis.org/3.44/fr/docs/user_manual/processing/modeler.html)  
 ## 1. Création du script Batch (.bat)
 
 Afin d’automatiser l’exécution du traitement FME, un script Batch a été créé.  
